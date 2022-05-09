@@ -1,14 +1,5 @@
 # Ecommerce APP
 
-
-- How to deploy, run and test.
-
-
-"""
-docker build . ecommerce
-docker run -p 8000:8000 ecommerce
-"""
-
 ## Deploy local 🚀
 
 ### Primera vez
