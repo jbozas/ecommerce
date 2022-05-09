@@ -1,0 +1,81 @@
+{
+	"info": {
+		"_postman_id": "6afec969-1997-455a-aa88-f7a52f5ea818",
+		"name": "Ecommerce",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create product.",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjUyMTM5NTkxLCJpYXQiOjE2NTIxMzkyOTEsImp0aSI6IjQ2MWVkZTk4ZmVmODRlNmZhMzQyMjgzNjZjNDJhNjNiIiwidXNlcl9pZCI6MX0.kdF04lEjLQucs7V8o6QN1GD3_encTSYv0Kqem_p4y-o"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Truck\",\n    \"stock\": 4,\n    \"price\": 100\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "localhost:8000/products/"
+			},
+			"response": []
+		},
+		{
+			"name": "Get token auth",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjUxNzAzMzg0LCJpYXQiOjE2NTE3MDMwODQsImp0aSI6IjljOGExMWI3N2I3MTQ5MDVhZWI5ODk0ZjUwMjRmZmI5IiwidXNlcl9pZCI6MX0.7WV-VKfGb4lgyEg9VBQhIr4WWnpNf6vSaYvJ6ncVq9A"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"username\": \"admin\",\n\"password\": \"admin\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "localhost:8000/api/token/"
+			},
+			"response": []
+		},
+		{
+			"name": "Create order, order-detail",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjUyMTM5NTkxLCJpYXQiOjE2NTIxMzkyOTEsImp0aSI6IjQ2MWVkZTk4ZmVmODRlNmZhMzQyMjgzNjZjNDJhNjNiIiwidXNlcl9pZCI6MX0.kdF04lEjLQucs7V8o6QN1GD3_encTSYv0Kqem_p4y-o"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n            \"details\": [\n                {\n                    \"product\": {\n                        \"id\": 1,\n                        \"name\": \"Truck\"\n                    },\n                    \"quantity\": 1\n\n                }\n            ]\n        }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "localhost:8000/transaction/"
+			},
+			"response": []
+		}
+	]
+}
