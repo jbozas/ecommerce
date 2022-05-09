@@ -9,7 +9,7 @@ from products.models import Product
 
 
 class OrderDetailSerializer(serializers.ModelSerializer):
-    product = serializers.CharField()
+    product = ProductSerializer()
     quantity = serializers.IntegerField()
 
     class Meta:
@@ -50,20 +50,25 @@ class OrderSerializer(serializers.ModelSerializer):
         return instance.get_total_in_dollars
 
     def is_valid(self):
-        for d in self.initial_data.get('details'):
+        for data in self.initial_data.get('details'):
             try:
-                Product.objects.get(
-                    id=d.get('product'), stock__gte=d.get('quantity'))
+                quantity = data.get('quantity')
+                product = Product.objects.get(**data.get('product'))
             except Exception:
-                raise ProductOrStockNotFound('Product or stock not found.')
+                raise ProductOrStockNotFound('Product not found.')
+            if not product.has_stock(quantity=quantity):
+                raise ValidationError(
+                    f'Stock not enough for product {product.id}.')
         return super(OrderSerializer, self).is_valid()
 
     def create(self, validated_data):
         order = Order.objects.create()
-        for d in validated_data.pop('details'):
+        for detail in self.initial_data.get('details'):
             try:
-                OrderDetail.create(order=order, product_id=d.get(
-                    'product'), quantity=d.get('quantity'))
+                quantity = detail.get('quantity')
+                product = Product.objects.get(**detail.get('product'))
+                OrderDetail.create(
+                    order=order, product=product, quantity=quantity)
             except ProductOrStockNotFound:
                 raise ValidationError(
                     'Order Detail failed because a missing product.')

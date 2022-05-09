@@ -6,6 +6,7 @@ from rest_framework.test import APITestCase
 
 from products.models import Product
 from orders.models import Order, OrderDetail
+from utils.tests import authenticate
 
 
 class AccountTests(APITestCase):
@@ -15,6 +16,7 @@ class AccountTests(APITestCase):
     """
 
     def setUp(self):
+        authenticate(self.client)
         self.url_list = reverse('orders:orders-list')
         self.url_create = reverse('orders:transaction-list')
         self.order = Order.objects.create()
@@ -24,7 +26,7 @@ class AccountTests(APITestCase):
             'stock': 4
         })
         self.order_detail = OrderDetail.create(
-            order=self.order, product_id=self.product.id, quantity=1)
+            order=self.order, product=self.product, quantity=1)
 
     def test_list_order_should_return_200(self):
         """
@@ -50,8 +52,11 @@ class AccountTests(APITestCase):
         data = {
             'details': [
                 {
-                    'quantity': 1,
-                    'product': self.product.id,
+                    'product': {
+                        'id': self.product.id,
+                        'name': self.product.name
+                    },
+                    'quantity': 1
 
                 }
             ]

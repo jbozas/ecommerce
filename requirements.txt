@@ -2,4 +2,3 @@ requests
 djangorestframework-simplejwt
 Django
 djangorestframework
-gunicorn

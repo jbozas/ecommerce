@@ -2,6 +2,7 @@ from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 
+from utils.tests import authenticate
 from products.models import Product
 
 
@@ -12,6 +13,7 @@ class ProductTests(APITestCase):
     """
 
     def setUp(self):
+        authenticate(self.client)
         self.url = reverse('products:products-list')
 
     def _mocked_product_data(self):

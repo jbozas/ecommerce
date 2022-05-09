@@ -14,6 +14,5 @@ class Product(TimeStampedModel):
         self.stock -= quantity
         self.save()
 
-    @property
     def has_stock(self, quantity: int) -> bool:
         return self.stock >= quantity

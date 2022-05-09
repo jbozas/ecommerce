@@ -59,18 +59,16 @@ class OrderDetail(TimeStampedModel):
         self.product.update_stock(-self.quantity)
 
     @classmethod
-    def create(self, product_id: int, quantity: int, order: Order, args=None, **kwargs):
+    def create(self, product: Product, quantity: int, order: Order, args=None, **kwargs):
         """
         Creates a new detail. For this checks that the actual Product's
         quantity is enough for the purchase.
         """
-        product = Product.objects.filter(id=product_id, stock__gte=quantity)
-        if not product.exists():
-            raise ProductOrStockNotFound('Product or stock not found.')
-        else:
-            product = product.first()
-            order.date_time = datetime.datetime.now()
-            product.update_stock(quantity)
+        if not product.has_stock(quantity):
+            raise ProductOrStockNotFound('Stock not found.')
+
+        order.date_time = datetime.datetime.now()
+        product.update_stock(quantity)
 
         data = {
             'product': product,
@@ -79,10 +77,3 @@ class OrderDetail(TimeStampedModel):
         }
 
         return self.objects.get_or_create(**data)
-
-    def delete(self, *args, **kwargs):
-        self.restore_stock
-        import ipdb
-        ipdb.set_trace()
-        a = 4
-        return super(OrderDetail).delete()
